@@ -19,19 +19,17 @@ def build_bar_and_pie_chart(dataframe: "pd.DataFrame", column_name: str,
     # Adds subplot on position 2
     ax2 = fig.add_subplot(122)
     ax.bar(x=count.index, height=count.values)
-    ax.set_title("Столбчатая диаграмма распределения " + variable_name +
-                 " в выборке")
+    ax.set_title("Столбчатая диаграмма распределения " + variable_name)
     ax2.pie(count.values, labels=count.index)
     ax2.legend(bbox_to_anchor=(0.9, 1))
-    ax2.set_title("Круговая диаграмма распределения " + variable_name +
-                  " в выборке")
+    ax2.set_title("Круговая диаграмма распределения " + variable_name)
 
     plt.setp([ax], xlabel='значения выборки', ylabel='частота')
     plt.show()
 
 
 def build_histogram_density_diagram(dataframe: "pd.DataFrame", column_name: str,
-                                    number: int):
+                                    number: str):
     """
     Построение гистограммы, оценки плотности распределения и диаграммы
     "ящик с усами".
@@ -47,13 +45,12 @@ def build_histogram_density_diagram(dataframe: "pd.DataFrame", column_name: str,
     ax = fig.add_subplot(131)
     ax2 = fig.add_subplot(133)
     ax3 = fig.add_subplot(132)
-    ax.hist(num1, bins=100)
-    ax.set_title("Гистограмма " + str(number) + " числового параметра")
+    ax.hist(num1)
+    ax.set_title("Гистограмма параметра " + number)
     ax2.boxplot(x=num1)
     ax3.set_title(
-        "Оценка функции плотности " + str(number) + " числового параметра")
-    ax2.set_title("Диаграмма 'ящик с усами' " + str(number) +
-                  " числового параметра")
+        "Оценка функции плотности параметра " + number)
+    ax2.set_title("Диаграмма 'ящик с усами' параметра " + number)
     dataframe[column_name].plot.kde()
     plt.setp([ax, ax3], xlabel='значения выборки')
     plt.setp([ax2], xlabel='номер выборки', ylabel='разброс значений')
@@ -68,9 +65,9 @@ def build_histogram(dataframe: "pd.DataFrame", first_column: str,
     ax = fig.add_subplot(131)
     ax2 = fig.add_subplot(133)
     ax3 = fig.add_subplot(132)
-    ax.hist(dataframe[first_column], bins=100)
-    ax2.hist(dataframe[second_column], bins=100)
-    ax3.hist(dataframe[third_column], bins=100)
+    ax.hist(dataframe[first_column])
+    ax2.hist(dataframe[second_column])
+    ax3.hist(dataframe[third_column])
     ax.set_title("Гистограмма 1 числового параметра")
     ax3.set_title("Гистограмма 2 числового параметра")
     ax2.set_title("Гистограмма 3 числового параметра")
