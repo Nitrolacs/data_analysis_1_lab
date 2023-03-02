@@ -51,6 +51,8 @@ def build_histogram_density_diagram(column: "pd.DataFrame",
     ax.set_title("Гистограмма и график функции плотности параметра "
                  + column_name)
 
+    # data - входные данные, bw_method - метод определения используемой
+    # полосы сглаживания, ax - предварительно созданная ось.
     sns.kdeplot(data=column, bw_method=0.5, ax=ax2)
     ax2.set_title("Оценка функции плотности параметра " + column_name)
 
