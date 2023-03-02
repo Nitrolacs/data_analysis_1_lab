@@ -43,37 +43,19 @@ def build_histogram_density_diagram(column: "pd.DataFrame",
     # dropna временно удаляет пустые значения, чтобы
     # избежать ошибки при построении
     fig = plt.figure(figsize=(19, 5))
-    """
-    ax = fig.add_subplot(131)
-    ax2 = fig.add_subplot(133)
-    ax3 = fig.add_subplot(132)
-
-    ax.hist(num1, bins="auto", edgecolor="black")
-    ax.set_title("Гистограмма параметра " + column_name)
-
-    ax2.boxplot(x=num1)
-    ax3.set_title(
-        "Оценка функции плотности параметра " + column_name)
-    
-    
-    column.plot.kde()
-    
-    
-    plt.setp([ax], ylabel='Количество')
-    plt.setp([ax3], ylabel='Плотность')
-    plt.show()
-    """
     ax = fig.add_subplot(131)
     ax2 = fig.add_subplot(132)
     ax3 = fig.add_subplot(133)
 
     ax.hist(column, bins="auto", edgecolor="black")
-    ax.set_title("Гистограмма параметра " + column_name)
+    ax.set_title("Гистограмма и график функции плотности параметра "
+                 + column_name)
 
     sns.kdeplot(data=column, bw_method=0.5, ax=ax2)
     ax2.set_title("Оценка функции плотности параметра " + column_name)
 
-    sns.boxplot(data=column, ax=ax3, orient='h')
+    num1 = column.dropna()
+    ax3.boxplot(x=num1, vert=False)
     ax3.set_title("Диаграмма 'ящик с усами' параметра " + column_name)
 
     plt.setp([ax, ax2, ax3], xlabel='Значения выборки')
