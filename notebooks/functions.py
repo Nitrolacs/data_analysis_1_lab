@@ -1,18 +1,18 @@
 """Основные функции для построения графиков"""
 import pandas as pd
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 
-def build_bar_and_pie_chart(dataframe: "pd.DataFrame", column_name: str,
-                            variable_name: str) -> None:
+def build_bar_and_pie_chart(column: "pd.DataFrame",
+                            column_name: str) -> None:
     """
     Построение столбчатой и круговой диаграммы.
-    :param dataframe: датафрейм
-    :param column_name: колонка
-    :param variable_name: текстовое название колонки
+    :param column: Колонка из датафрейма
+    :param column_name: Название колонка
     :return: None
     """
-    count = dataframe[column_name].value_counts()
+    count = column.value_counts()
     fig = plt.figure(figsize=(15, 5))
     # Добавляет subplot на позицию 1
     ax = fig.add_subplot(121) # 121 - это первая строка, второй столбец и первая
@@ -21,47 +21,65 @@ def build_bar_and_pie_chart(dataframe: "pd.DataFrame", column_name: str,
     ax2 = fig.add_subplot(122)
 
     ax.bar(x=count.index, height=count.values)
-    ax.set_title("Столбчатая диаграмма распределения " + variable_name)
+    ax.set_title("Столбчатая диаграмма распределения " + column_name)
 
     ax2.pie(count.values, labels=count.index, autopct="%1.1f%%")
     ax2.legend(bbox_to_anchor=(0.9, 1))
-    ax2.set_title("Круговая диаграмма распределения " + variable_name)
+    ax2.set_title("Круговая диаграмма распределения " + column_name)
 
-    plt.setp([ax], xlabel='значения выборки', ylabel='частота')
+    plt.setp([ax], xlabel='Значения выборки', ylabel='Количество')
     plt.show()
 
 
-def build_histogram_density_diagram(dataframe: "pd.DataFrame", column_name: str,
-                                    number: str) -> None:
+def build_histogram_density_diagram(column: "pd.DataFrame",
+                                    column_name: str) -> None:
     """
     Построение гистограммы, оценки плотности распределения и диаграммы
     "ящик с усами".
-    :param dataframe: датафрейм
-    :param column_name: колонка
-    :param number: текстовое название колонки
+    :param column: Колонка из датафрейма
+    :param column_name: Название колонки
     :return: None
     """
     # dropna временно удаляет пустые значения, чтобы
     # избежать ошибки при построении
-    num1 = dataframe[column_name].dropna()
     fig = plt.figure(figsize=(19, 5))
-
+    """
     ax = fig.add_subplot(131)
     ax2 = fig.add_subplot(133)
     ax3 = fig.add_subplot(132)
 
     ax.hist(num1, bins="auto", edgecolor="black")
-    ax.set_title("Гистограмма параметра " + number)
+    ax.set_title("Гистограмма параметра " + column_name)
 
     ax2.boxplot(x=num1)
     ax3.set_title(
-        "Оценка функции плотности параметра " + number)
-    ax2.set_title("Диаграмма 'ящик с усами' параметра " + number)
-    dataframe[column_name].plot.kde()
-    plt.setp([ax, ax3], xlabel='значения выборки')
-    plt.setp([ax2], xlabel='номер выборки', ylabel='разброс значений')
-    plt.setp([ax], ylabel='частота')
-    plt.setp([ax3], ylabel='вероятность')
+        "Оценка функции плотности параметра " + column_name)
+    
+    
+    column.plot.kde()
+    
+    
+    plt.setp([ax], ylabel='Количество')
+    plt.setp([ax3], ylabel='Плотность')
+    plt.show()
+    """
+    ax = fig.add_subplot(131)
+    ax2 = fig.add_subplot(132)
+    ax3 = fig.add_subplot(133)
+
+    ax.hist(column, bins="auto", edgecolor="black")
+    ax.set_title("Гистограмма параметра " + column_name)
+
+    sns.kdeplot(data=column, bw_method=0.5, ax=ax2)
+    ax2.set_title("Оценка функции плотности параметра " + column_name)
+
+    sns.boxplot(data=column, ax=ax3, orient='h')
+    ax3.set_title("Диаграмма 'ящик с усами' параметра " + column_name)
+
+    plt.setp([ax, ax2, ax3], xlabel='Значения выборки')
+    plt.setp([ax], ylabel='Количество')
+    plt.setp([ax2], ylabel='Вероятность')
+    plt.setp([ax3], ylabel='Номер выборки')
     plt.show()
 
 
