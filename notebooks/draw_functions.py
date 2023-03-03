@@ -65,31 +65,3 @@ def build_histogram_density_diagram(column: "pd.DataFrame",
     plt.setp([ax2], ylabel='Вероятность')
     plt.setp([ax3], ylabel='Номер выборки')
     plt.show()
-
-
-def build_histogram(dataframe: "pd.DataFrame", first_column: str,
-                    second_column: str, third_column: str) -> None:
-    """
-    Построение гистограмм для всех количественных признаков.
-    :param dataframe: датафрейм
-    :param first_column: первая колонка
-    :param second_column: вторая колонка
-    :param third_column: третья колонка
-    :return: None
-    """
-    fig = plt.figure(figsize=(17, 5))
-
-    ax = fig.add_subplot(131)
-    ax2 = fig.add_subplot(133)
-    ax3 = fig.add_subplot(132)
-
-    ax.hist(dataframe[first_column], bins="auto", edgecolor="black")
-    ax2.hist(dataframe[second_column], bins="auto", edgecolor="black")
-    ax3.hist(dataframe[third_column], bins="auto", edgecolor="black")
-
-    ax.set_title("Гистограмма 1 числового параметра")
-    ax3.set_title("Гистограмма 2 числового параметра")
-    ax2.set_title("Гистограмма 3 числового параметра")
-
-    plt.setp([ax, ax2, ax3], xlabel='значения выборки', ylabel='частота')
-    plt.show()
